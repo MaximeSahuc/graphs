@@ -1,0 +1,34 @@
+name: graphes
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install packages
+      run: sudo apt-get install -y graphviz
+
+    - name: Check out
+      uses: actions/checkout@v3
+
+    - name: Generate graphs
+      run: ./generate_graphs.sh
+    
+    - name: Commit files
+      id: commit
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "github-actions"
+        git add --all
+        if git commit -m "[GitHub Action] Add generated graphs"; then
+          echo "push=true" >> $GITHUB_ENV
+        else
+          echo "push=false" >> $GITHUB_ENV
+        fi
+      shell: bash
+    
+    - name: Push changes
+      if: env.push == 'true'
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}

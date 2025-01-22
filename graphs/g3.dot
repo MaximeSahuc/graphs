@@ -1,0 +1,13 @@
+graph {
+node [shape="star" style="filled" fillcolor="aqua"];
+edge [fontsize="20pt" color="red"];
+0 [shape="box"];
+
+0 [pos="1,5!"];
+0 -- 1;
+2 -- 2 [label="meg"];
+3 -- 2;
+4 -- 1;
+0 -- 4;
+4 -- 1;
+}
